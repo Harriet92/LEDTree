@@ -14,11 +14,17 @@ export class ModesComponent implements OnInit {
   
   onSelect(mode: Mode): void {
     this.selectedMode = mode;
+    this.changeMode(mode);
   }
 
   getModes(): void {
     this.modeService.getModes()
       .subscribe(modes => this.modes = modes);
+  }
+
+  changeMode(mode: Mode): void {
+    this.modeService.changeMode(mode)
+      .subscribe(e => console.log(e));
   }
 
   constructor(private modeService: ModeService) { }
