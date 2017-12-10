@@ -38,15 +38,12 @@ class MainController(object):
 
 	def argsToSpeed(self, args):
 		speed = 50 / float(1000)
-		print speed
 		if "speed" in args :
 			argSpeed = float(args["speed"]) 
 			if argSpeed == 0:
 				speed = 1000
 			else:
 				speed = speed / float(args["speed"]) 
-		print speed
-		print argSpeed
 		return speed
 
 	# Define functions which animate LEDs in various ways.
@@ -106,6 +103,7 @@ class MainController(object):
 
 	def rainbowCycle(self, args):
 		wait_s=self.argsToSpeed(args)
+		print wait_s
 		"""Draw rainbow that uniformly distributes itself across all pixels."""
 		while True:
 			for j in range(256):
