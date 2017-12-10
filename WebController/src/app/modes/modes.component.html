@@ -1,0 +1,10 @@
+<h2>Modes</h2>
+<ul class="modes">
+  <li *ngFor="let mode of modes"
+    [class.selected]="mode === selectedMode"
+    (click)="onSelect(mode)">
+    <span class="badge">{{mode.id}}</span> {{mode.name}} {{mode.speed}}
+  </li>
+</ul>
+ 
+<app-mode-detail [mode]="selectedMode"></app-mode-detail>

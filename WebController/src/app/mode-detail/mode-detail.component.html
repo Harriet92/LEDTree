@@ -1,0 +1,14 @@
+<div *ngIf="mode">
+  
+   <h2>{{ mode.name | uppercase }} Details</h2>
+   <div><span>id: </span>{{mode.id}}</div>
+   <div>
+     <label>name:
+       <input [(ngModel)]="mode.name" placeholder="name">
+     </label>
+     <label>speed:
+       <input [(ngModel)]="mode.speed" placeholder="50">
+     </label>
+   </div>
+  
+ </div>
