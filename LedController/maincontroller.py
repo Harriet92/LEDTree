@@ -36,9 +36,22 @@ class MainController(object):
 			color = Color(args["color"]["b"], args["color"]["g"], args["color"]["r"])
 		return color
 
+	def argsToSpeed(self, args):
+		speed = 50 / float(1000)
+		print speed
+		if "speed" in args :
+			argSpeed = float(args["speed"]) 
+			if argSpeed == 0:
+				speed = 1000
+			else:
+				speed = speed / float(args["speed"]) 
+		print speed
+		print argSpeed
+		return speed
+
 	# Define functions which animate LEDs in various ways.
 	def colorWipeSteps(self, args):	
-		wait_ms=50
+		wait_s=self.argsToSpeed(args)
 		color = self.argsToColor(args) 
 		while True:
 			"""Wipe color across display a pixel at a time."""
@@ -47,10 +60,9 @@ class MainController(object):
 			for i in range(self.strip.numPixels()):
 				self.strip.setPixelColor(i, color)   
 				self.strip.show()
-				self.time.sleep(wait_ms/1000.0)
+				self.time.sleep(wait_s)
 
 	def colorWipe(self, args):
-		wait_ms=50
 		color = self.argsToColor(args) 
 		"""Wipe color across display a pixel at a time."""
 		while True:
@@ -59,19 +71,17 @@ class MainController(object):
 			self.strip.show()	
 
 	def theaterChase(self, args):
-		wait_ms=50
-		iterations=10
+		wait_s=self.argsToSpeed(args)
 		color = Color(  0,   0, 127) #self.argsToColor(args) 
 		"""Movie theater light style chaser animation."""
 		while True:
-			for j in range(iterations):
-				for q in range(3):
-					for i in range(0, self.strip.numPixels(), 3):
-						self.strip.setPixelColor(i+q, color)
-					self.strip.show()
-					time.sleep(wait_ms/1000.0)
-					for i in range(0, self.strip.numPixels(), 3):
-						self.strip.setPixelColor(i+q, 0)
+			for q in range(3):
+				for i in range(0, self.strip.numPixels(), 3):
+					self.strip.setPixelColor(i+q, color)
+				self.strip.show()
+				time.sleep(wait_s)
+				for i in range(0, self.strip.numPixels(), 3):
+					self.strip.setPixelColor(i+q, 0)
 
 	def wheel(self, pos):
 		"""Generate rainbow colors across 0-255 positions."""
@@ -85,28 +95,27 @@ class MainController(object):
 			return Color(0, pos * 3, 255 - pos * 3)
 
 	def rainbow(self, args):
-		wait_ms=20
-		iterations=1
+		wait_s=self.argsToSpeed(args)
 		"""Draw rainbow that fades across all pixels at once."""
 		while True:
-			for j in range(256*iterations):
+			for j in range(256):
 				for i in range(self.strip.numPixels()):
 					self.strip.setPixelColor(i, self.wheel((i+j) & 255))
 				self.strip.show()
-				time.sleep(wait_ms/1000.0)
+				time.sleep(wait_s)
 
 	def rainbowCycle(self, args):
-		wait_ms = 1 
+		wait_s=self.argsToSpeed(args)
 		"""Draw rainbow that uniformly distributes itself across all pixels."""
 		while True:
 			for j in range(256):
 				for i in range(self.strip.numPixels()):
 					self.strip.setPixelColor(i, self.wheel((int(i * 256 / self.strip.numPixels()) + j) & 255))
 				self.strip.show()
-				time.sleep(wait_ms/1000.0)
+				time.sleep(wait_s)
 
-	def theaterChaseRainbow(self):
-		wait_ms=50
+	def theaterChaseRainbow(self, args):
+		wait_s=self.argsToSpeed(args)
 		"""Rainbow movie theater light style chaser animation."""
 		while True:
 			for j in range(256):
@@ -114,7 +123,7 @@ class MainController(object):
 					for i in range(0, self.strip.numPixels(), 3):
 						self.strip.setPixelColor(i+q, self.wheel((i+j) % 255))
 					self.strip.show()
-					time.sleep(wait_ms/1000.0)
+					time.sleep(wait_s)
 					for i in range(0, self.strip.numPixels(), 3):
 						self.strip.setPixelColor(i+q, 0)
 
