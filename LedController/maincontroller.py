@@ -43,6 +43,8 @@ class MainController(object):
 		while True:
 			"""Wipe color across display a pixel at a time."""
 			for i in range(self.strip.numPixels()):
+				self.strip.setPixelColor(i, Color(0,0,0))
+			for i in range(self.strip.numPixels()):
 				self.strip.setPixelColor(i, color)   
 				self.strip.show()
 				self.time.sleep(wait_ms/1000.0)
@@ -150,6 +152,9 @@ class MainController(object):
 
 		self.animationProcess = multiprocessing.Process(target=targetFunction, args=(args,))
 		self.animationProcess.start()
+
+	def terminate(self):
+		self.animationProcess.terminate()
 
 	def run(self):
 		p = None
