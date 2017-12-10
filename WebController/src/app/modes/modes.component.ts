@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Mode } from '../mode';
-import { MODES } from '../mock-modes';
-import * as child_process from 'child_process';
+import { ModeService } from '../mode.service';
 
 @Component({
   selector: 'app-modes',
@@ -10,35 +9,22 @@ import * as child_process from 'child_process';
 })
 export class ModesComponent implements OnInit {
   
-  py: any;
-  modes = MODES;
+  modes: Mode[];
   selectedMode: Mode;
   
   onSelect(mode: Mode): void {
     this.selectedMode = mode;
-    this.sendSignal(mode);
   }
 
-  sendSignal(mode: Mode): void {
-    var data = '{"mode":"rainbowCycle"}';
-    this.py.stdin.write(data);
-    this.py.stdin.end();
+  getModes(): void {
+    this.modeService.getModes()
+      .subscribe(modes => this.modes = modes);
   }
 
-  constructor() { }
+  constructor(private modeService: ModeService) { }
 
   ngOnInit() {
-    var spawn = child_process.spawn;
-    this.py = spawn('python', ['/home/pi/LEDTree/LedController/maincontroller.py']);
-    var dataString = '';
-
-    this.py.stdout.on('data', function(data){
-      dataString += data.toString();
-    });
-
-    this.py.stdout.on('end', function(){
-      console.log('RETURNED=',dataString);
-    });
+    this.getModes();
   }
 
 }

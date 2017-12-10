@@ -4,19 +4,24 @@ import { FormsModule } from '@angular/forms';
 import { ModesComponent } from './modes/modes.component';
 import { AppComponent } from './app.component';
 import { ModeDetailComponent } from './mode-detail/mode-detail.component';
-
+import { ModeService } from './mode.service';
+import { MessageService } from './message.service';
+import { MessagesComponent } from './messages/messages.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
     ModesComponent,
-    ModeDetailComponent
+    ModeDetailComponent,
+    MessagesComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [ ModeService, MessageService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
