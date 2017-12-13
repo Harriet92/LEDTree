@@ -6,9 +6,15 @@
      <label>name:
        <input [(ngModel)]="mode.name" placeholder="name">
      </label>
-     <label>speed:
-       <input [(ngModel)]="mode.speed" placeholder="50">
-     </label>
+     <div *ngIf="mode.args.length > 1">
+        <li *ngFor="let arg of mode.args">
+          Name: {{arg.name}}
+          <div *ngIf="arg.name == 'color'">
+            Value: {{arg.value}}
+            <input [(ngModel)]="arg.value" (click)="onSelect($event)" type="color" name="favcolor">
+        </div>
+        </li>
+     </div>
    </div>
   
  </div>

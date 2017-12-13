@@ -1,5 +1,10 @@
 export class Mode {
   id: number;
   name: string;
-  speed: number;
+  args: Arg[];
+}
+
+export class Arg {
+  name: string;
+  value: string;
 }

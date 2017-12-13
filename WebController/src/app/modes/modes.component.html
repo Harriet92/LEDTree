@@ -3,7 +3,7 @@
   <li *ngFor="let mode of modes"
     [class.selected]="mode === selectedMode"
     (click)="onSelect(mode)">
-    <span class="badge">{{mode.id}}</span> {{mode.name}} {{mode.speed}}
+    <span class="badge">{{mode.id}}</span> {{mode.name}}
   </li>
 </ul>
  

@@ -1,0 +1,66 @@
+[
+    { "id": 1, "name": "clear",
+        "args": [
+        ]
+    },
+    { "id": 2, "name": "colorWipe",
+        "args": [
+            {
+                "name": "speed",
+                "value": "10"
+            },
+            {
+                "name": "color",
+                "value": "100,100,255"
+            }
+        ]
+    },
+    { "id": 3, "name": "theaterChase",
+        "args": [
+            {
+                "name":"speed",
+                "value": "20"
+            },
+            {
+                "name":"color",
+                "value": "100,100,255"
+            }
+        ]
+    },
+    { "id": 4, "name": "rainbow",
+        "args": [
+            {
+                "name":"speed",
+                "value": "30"
+            },
+            {
+                "name":"color",
+                "value": "100,100,255"
+            }
+        ]
+    },
+    { "id": 5, "name": "rainbowCycle",
+        "args": [
+            {
+                "name":"speed",
+                "value": "40"
+            },
+            {
+                "name":"color",
+                "value": "100,100,255"
+            }
+        ]
+    },
+    { "id": 6, "name": "theaterChaseRainbow",
+        "args": [
+            {
+                "name":"speed",
+                "value": "50"
+            },
+            {
+                "name":"color",
+                "value": "100,100,255"
+            }
+        ]
+    }
+]
