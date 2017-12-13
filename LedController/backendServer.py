@@ -5,7 +5,7 @@ from maincontroller import MainController
 import json
 app = Flask(__name__)
 CORS(app)
-#controller = MainController()
+controller = MainController()
 
 @app.route('/')
 def hello():
@@ -26,7 +26,7 @@ def getModes():
 @app.route('/change', methods=['POST'])
 def changeLEDMode():
     print request.data
-    #controller.changeMode(json.loads(request.data))
+    controller.changeMode(json.loads(request.data))
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 
 if __name__=='__main__':

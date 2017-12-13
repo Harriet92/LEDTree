@@ -30,26 +30,33 @@ class MainController(object):
 	def wait(self, s):
 		time.sleep(s)
 
-	def argsToColor(self, args):
-		color = Color(255, 255, 255)
-		if "color" in args and "r" in args["color"] and "g" in args["color"] and "b" in args["color"]:
-			color = Color(args["color"]["b"], args["color"]["g"], args["color"]["r"])
+	def argsToDic(self, args):
+		dic = {}
+		for arg in args:
+			if arg["name"] == "speed":
+				dic["speed"] = self.argsToSpeed(arg["value"])
+			elif arg["name"] == "color":
+				dic["color"] = self.argsToColor(arg["value"])
+		return dic
+
+	def argsToColor(self, hcolor):
+		h= hcolor.lstrip('#')
+		color = Color(int(h[0:2], 16), int(h[4:6], 16), int(h[2:4], 16) )
 		return color
 
-	def argsToSpeed(self, args):
+	def argsToSpeed(self, arg):
 		speed = 50 / float(1000)
-		if "speed" in args :
-			argSpeed = float(args["speed"]) 
-			if argSpeed == 0:
-				speed = 1000
-			else:
-				speed = speed / float(args["speed"]) 
+		argSpeed = float(arg) 
+		if argSpeed == 0:
+			speed = 1000
+		else:
+			speed = speed / argSpeed
 		return speed
 
 	# Define functions which animate LEDs in various ways.
 	def colorWipeSteps(self, args):	
-		wait_s=self.argsToSpeed(args)
-		color = self.argsToColor(args) 
+		wait_s= args["speed"]
+		color = args["color"]
 		while True:
 			"""Wipe color across display a pixel at a time."""
 			for i in range(self.strip.numPixels()):
@@ -60,7 +67,8 @@ class MainController(object):
 				self.time.sleep(wait_s)
 
 	def colorWipe(self, args):
-		color = self.argsToColor(args) 
+		color = args["color"]
+		print "WIPEEE"
 		"""Wipe color across display a pixel at a time."""
 		while True:
 			for i in range(self.strip.numPixels()):
@@ -68,8 +76,8 @@ class MainController(object):
 			self.strip.show()	
 
 	def theaterChase(self, args):
-		wait_s=self.argsToSpeed(args)
-		color = Color(  0,   0, 127) #self.argsToColor(args) 
+		wait_s= args["speed"]
+		color = args["color"]
 		"""Movie theater light style chaser animation."""
 		while True:
 			for q in range(3):
@@ -92,7 +100,7 @@ class MainController(object):
 			return Color(0, pos * 3, 255 - pos * 3)
 
 	def rainbow(self, args):
-		wait_s=self.argsToSpeed(args)
+		wait_s= args["speed"]
 		"""Draw rainbow that fades across all pixels at once."""
 		while True:
 			for j in range(256):
@@ -102,8 +110,7 @@ class MainController(object):
 				time.sleep(wait_s)
 
 	def rainbowCycle(self, args):
-		wait_s=self.argsToSpeed(args)
-		print wait_s
+		wait_s= args["speed"]
 		"""Draw rainbow that uniformly distributes itself across all pixels."""
 		while True:
 			for j in range(256):
@@ -113,7 +120,7 @@ class MainController(object):
 				time.sleep(wait_s)
 
 	def theaterChaseRainbow(self, args):
-		wait_s=self.argsToSpeed(args)
+		wait_s= args["speed"]
 		"""Rainbow movie theater light style chaser animation."""
 		while True:
 			for j in range(256):
@@ -157,8 +164,9 @@ class MainController(object):
 		else:
 			targetFunction = self.colorWipe
 
-		self.animationProcess = multiprocessing.Process(target=targetFunction, args=(args,))
+		self.animationProcess = multiprocessing.Process(target=targetFunction, args=(self.argsToDic(args),))
 		self.animationProcess.start()
+
 
 	def terminate(self):
 		self.animationProcess.terminate()

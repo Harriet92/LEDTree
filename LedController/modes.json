@@ -11,7 +11,7 @@
             },
             {
                 "name": "color",
-                "value": "100,100,255"
+                "value": "#ff62ff"
             }
         ]
     },
@@ -23,7 +23,7 @@
             },
             {
                 "name":"color",
-                "value": "100,100,255"
+                "value": "#ff62ff"
             }
         ]
     },
@@ -35,7 +35,7 @@
             },
             {
                 "name":"color",
-                "value": "100,100,255"
+                "value": "#ff62ff"
             }
         ]
     },
@@ -47,7 +47,7 @@
             },
             {
                 "name":"color",
-                "value": "100,100,255"
+                "value": "#ff62ff"
             }
         ]
     },
@@ -59,7 +59,7 @@
             },
             {
                 "name":"color",
-                "value": "100,100,255"
+                "value": "#ff62ff"
             }
         ]
     }

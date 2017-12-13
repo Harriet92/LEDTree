@@ -11,8 +11,12 @@
           Name: {{arg.name}}
           <div *ngIf="arg.name == 'color'">
             Value: {{arg.value}}
-            <input [(ngModel)]="arg.value" (click)="onSelect($event)" type="color" name="favcolor">
+            <input #colorinput [(ngModel)]="arg.value" (change)="changeColor(colorinput)" type="color">
         </div>
+        <div *ngIf="arg.name == 'speed'">
+          Value: {{arg.value}}
+          <input  #speedinput [(ngModel)]="arg.value" (change)="changeSpeed(speedinput)" type="range" min="0" max="100">
+      </div>
         </li>
      </div>
    </div>

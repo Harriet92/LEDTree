@@ -11,10 +11,11 @@ export class ModesComponent implements OnInit {
   
   modes: Mode[];
   selectedMode: Mode;
+
+  constructor(private modeService: ModeService) { }
   
   onSelect(mode: Mode): void {
     this.selectedMode = mode;
-    this.changeMode(mode);
   }
 
   getModes(): void {
@@ -22,12 +23,7 @@ export class ModesComponent implements OnInit {
       .subscribe(modes => this.modes = modes);
   }
 
-  changeMode(mode: Mode): void {
-    this.modeService.changeMode(mode)
-      .subscribe(e => console.log(e));
-  }
 
-  constructor(private modeService: ModeService) { }
 
   ngOnInit() {
     this.getModes();
