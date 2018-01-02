@@ -3,9 +3,30 @@ from flask_cors import CORS
 from flask import request
 from maincontroller import MainController 
 import json
+import sys
+
 app = Flask(__name__)
 CORS(app)
 controller = MainController()
+
+def RGBtoBGR(stringRGB):
+    result = "\"#"
+    result += stringRGB[3:5]
+    result += stringRGB[5:7]
+    result += stringRGB[1:3]
+    result += "\""
+    return result
+
+def changeColor(requestData):
+    if requestData and "\"color\"" in requestData:
+        i = requestData.index("\"color\"")
+        newColor = RGBtoBGR(requestData[i+17:i+24])
+        newData = requestData[:i+16]
+        newData += newColor
+        newData += requestData[i+25:]
+        return newData
+    else:
+        return requestData
 
 @app.route('/')
 def hello():
@@ -25,9 +46,14 @@ def getModes():
 
 @app.route('/change', methods=['POST'])
 def changeLEDMode():
-    print request.data
-    controller.changeMode(json.loads(request.data))
+    params = json.loads(changeColor(request.data))
+    controller.changeMode(params)
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 
 if __name__=='__main__':
-    app.run(host='0.0.0.0', debug=True, port=8000)
+    try:
+        app.run(host='0.0.0.0', debug=False, port=8080)
+    except KeyboardInterrupt:
+        print "Exiting"
+        controller.terminate()
+        sys.exit()

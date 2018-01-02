@@ -4,8 +4,8 @@
 # Direct port of the Arduino NeoPixel library strandtest example.  Showcases
 # various animations on a strip of NeoPixels.
 import time, sys, json, multiprocessing
-
 from neopixel import *
+from random import randint
 
 class MainController(object):
 
@@ -45,7 +45,7 @@ class MainController(object):
 		return color
 
 	def argsToSpeed(self, arg):
-		speed = 50 / float(1000)
+		speed = 800 / float(1000)
 		argSpeed = float(arg) 
 		if argSpeed == 0:
 			speed = 1000
@@ -68,7 +68,6 @@ class MainController(object):
 
 	def colorWipe(self, args):
 		color = args["color"]
-		print "WIPEEE"
 		"""Wipe color across display a pixel at a time."""
 		while True:
 			for i in range(self.strip.numPixels()):
@@ -132,6 +131,59 @@ class MainController(object):
 					for i in range(0, self.strip.numPixels(), 3):
 						self.strip.setPixelColor(i+q, 0)
 
+	def moveArray(self, ledArr):
+		if sum(ledArr) == 0 or sum(ledArr) == self.LED_COUNT:
+			ledArr[0] = 1
+			return ledArr
+		lastIndex = 0
+		for i,val in enumerate(ledArr):
+			if val == 1:
+				lastIndex = i
+		if ledArr[lastIndex - 1] == 1 or lastIndex == 0:
+			ledArr[self.LED_COUNT-1]=1
+		else:
+			ledArr[lastIndex] = 0
+			ledArr[lastIndex - 1] = 1
+		return ledArr
+
+
+	def counter(self, args):
+		color = args["color"]
+		wait_s= args["speed"]
+		"""One by one countdown to the bottom."""
+		LEDarray = [0] * self.LED_COUNT
+		while True:
+			for ind,led in enumerate(LEDarray):
+				if led == 1:
+					self.strip.setPixelColor(ind, color)
+				else:
+					self.strip.setPixelColor(ind, 0)
+			self.strip.show()
+			time.sleep(wait_s)
+			LEDarray = self.moveArray(LEDarray)
+
+	def moveRandom(self, ledArr):
+		if sum(ledArr) > 0.75 * self.LED_COUNT:
+			ledArr = [0] * self.LED_COUNT
+		ledArr[randint(0, self.LED_COUNT-1)]=1
+		return ledArr
+
+
+	def random(self, args):
+		color = args["color"]
+		wait_s= args["speed"]
+		"""Random."""
+		LEDarray = [0] * self.LED_COUNT
+		while True:
+			for ind,led in enumerate(LEDarray):
+				if led == 1:
+					self.strip.setPixelColor(ind, color)
+				else:
+					self.strip.setPixelColor(ind, 0)
+			self.strip.show()
+			time.sleep(wait_s)
+			LEDarray = self.moveRandom(LEDarray)
+
 	def read_in(self):
 		try:
 			lines = sys.stdin.readlines()
@@ -144,7 +196,12 @@ class MainController(object):
 		if not "mode" in command:
 			return
 		mode = command["mode"]
-		args = command["args"] if "args" in command else {}
+		
+		if "args" in command:
+			args = command["args"] 
+			args=self.argsToDic(args)
+			#print str(args["color"])
+
 		print "Staring mode: " + mode
 		if self.animationProcess != None:
 			self.animationProcess.terminate()
@@ -161,10 +218,14 @@ class MainController(object):
 			targetFunction = self.rainbowCycle
 		elif mode == "theaterChaseRainbow":
 			targetFunction = self.theaterChaseRainbow
+		elif mode == "counter":
+			targetFunction = self.counter
+		elif mode == "random":
+			targetFunction = self.random
 		else:
 			targetFunction = self.colorWipe
 
-		self.animationProcess = multiprocessing.Process(target=targetFunction, args=(self.argsToDic(args),))
+		self.animationProcess = multiprocessing.Process(target=targetFunction, args=(args,))
 		self.animationProcess.start()
 
 

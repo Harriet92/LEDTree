@@ -1,22 +1,22 @@
 <div *ngIf="mode">
   
    <h2>{{ mode.name | uppercase }} Details</h2>
-   <div><span>id: </span>{{mode.id}}</div>
+   <!--<div><span>id: </span>{{mode.id}}</div>-->
    <div>
-     <label>name:
+     <!--<label>name:
        <input [(ngModel)]="mode.name" placeholder="name">
-     </label>
-     <div *ngIf="mode.args.length > 1">
+     </label>-->
+     <div *ngIf="mode.args.length > 0">
         <li *ngFor="let arg of mode.args">
-          Name: {{arg.name}}
+          Param: {{arg.name}}
           <div *ngIf="arg.name == 'color'">
             Value: {{arg.value}}
             <input #colorinput [(ngModel)]="arg.value" (change)="changeColor(colorinput)" type="color">
-        </div>
-        <div *ngIf="arg.name == 'speed'">
-          Value: {{arg.value}}
-          <input  #speedinput [(ngModel)]="arg.value" (change)="changeSpeed(speedinput)" type="range" min="0" max="100">
-      </div>
+          </div>
+          <div *ngIf="arg.name == 'speed'">
+            Value: {{arg.value}}
+            <input  #speedinput [(ngModel)]="arg.value" (change)="changeSpeed(speedinput)" type="range" min="0" max="100">
+          </div>
         </li>
      </div>
    </div>

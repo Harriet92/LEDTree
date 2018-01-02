@@ -10,8 +10,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 @Injectable()
 export class ModeService {
 
-  private getModesUrl = 'http://192.168.0.3:8000/getmodes';
-  private changeModeUrl = 'http://192.168.0.3:8000/change';
+  private getModesUrl = 'http://' + window.location.hostname + ':8080/getmodes';
+  private changeModeUrl = 'http://' + window.location.hostname + ':8080/change';
 
 
   constructor(
